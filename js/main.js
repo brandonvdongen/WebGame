@@ -1,0 +1,1 @@
+import * as mapController from '/modules/my-module.js';
