@@ -21,7 +21,7 @@ export function getMap() {
 }
 
 //get tiletype of coordinate in grid
-export function getTile(x,y){
+export function getTileType(x,y){
     const type = map[x][y];
     if(type === 0)return "EMPTY";
     if(type === 1)return "UNBREAKABLE";
