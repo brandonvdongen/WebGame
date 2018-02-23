@@ -20,20 +20,41 @@ let map = [];
 
 //load the map template into the actual data
 export function prepare() {
-    map = map_layout;
+    const promise = new Promise((resolve, reject) => {
+        map = map_layout;
+        if (map) {
+            resolve(map);
+        }
+        else {
+            reject(Error("no map loaded"));
+        }
+
+    });
+    return promise;
 }
+
 //get map as array
 export function getMap() {
-    return map;
+    const promise = new Promise(function (resolve, reject) {
+        if (map) {
+            resolve(map);
+        }
+        else {
+            reject(Error("no map loaded"));
+        }
+    });
+    return promise;
 }
 
 //get tiletype of coordinate in grid
 export function getTileType(x, y) {
-    const type = map[x][y];
-    if (type === 0) return "EMPTY";
-    if (type === 1) return "UNBREAKABLE";
-    if (type === 2) return "BREAKABLE";
-    if (type === 3) return "PICKUP";
-    if (type === 4) return "PLAYER";
-    if (type === 5) return "EXPLOSION";
+    if (map) {
+        const type = map[x][y];
+        if (type === 0) return "EMPTY";
+        if (type === 1) return "UNBREAKABLE";
+        if (type === 2) return "BREAKABLE";
+        if (type === 3) return "PICKUP";
+        if (type === 4) return "PLAYER";
+        if (type === 5) return "EXPLOSION";
+    }
 }
