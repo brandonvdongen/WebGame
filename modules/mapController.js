@@ -48,13 +48,20 @@ export function getMap() {
 
 //get tiletype of coordinate in grid
 export function getTileType(x, y) {
-    if (map) {
-        const type = map[x][y];
-        if (type === 0) return "EMPTY";
-        if (type === 1) return "UNBREAKABLE";
-        if (type === 2) return "BREAKABLE";
-        if (type === 3) return "PICKUP";
-        if (type === 4) return "PLAYER";
-        if (type === 5) return "EXPLOSION";
-    }
+
+    const promise = new Promise(function (resolve, reject) {
+        if (map) {
+            const type = map[x][y];
+            if (type === 0) resolve("EMPTY");
+            if (type === 1) resolve("UNBREAKABLE");
+            if (type === 2) resolve("BREAKABLE");
+            if (type === 3) resolve("PICKUP");
+            if (type === 4) resolve("PLAYER");
+            if (type === 5) resolve("EXPLOSION");
+        }
+        else {
+            reject(Error("no map loaded"));
+        }
+    });
+    return promise;
 }
