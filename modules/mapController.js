@@ -79,9 +79,9 @@ export function drawMap(map, gamescreen) {
                 div.classList.add("tile");
                 div.style.height="50px";
                 div.style.width = "50px";
-                if(r === "EMPTY")div.style.backgroundColor = "#88A5ED";
-                if(r === "UNBREAKABLE")div.style.backgroundColor = "black";
-                if(r === "BREAKABLE")div.style.backgroundColor = "gred";
+                if(r === "EMPTY")div.style.background = "url('assets/svg/Tile_Floor.svg')";
+                if(r === "UNBREAKABLE")div.style.background = "url('assets/svg/Wall_Unbreakable.svg')";
+                if(r === "BREAKABLE")div.style.background = "url('assets/svg/Wall_Breakable.svg')";
                 div.dataset.pos = x+"|"+y;
                 div.dataset.type = r;
                 gamescreen.appendChild(div);
