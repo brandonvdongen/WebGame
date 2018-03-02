@@ -1,4 +1,11 @@
 import * as mapController from '../modules/mapController.js';
 
-console.log(mapController.getMap());
-console.log(mapController.getTile(1,1));
+const gamescreen = document.getElementById("gamescreen");
+let map;
+
+//prepare map variable with map data
+mapController.prepare()
+    .then((r) => {
+        map = r;
+        mapController.drawMap(map,gamescreen);
+    });
