@@ -37,7 +37,7 @@ export function prepare(gamescreen) {
 
 //get map as array
 export function getMap() {
-    const promise = new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         if (map) {
             resolve(map);
         }
@@ -45,14 +45,14 @@ export function getMap() {
             reject(Error("no map loaded"));
         }
     });
-    return promise;
 }
 
 //get tiletype of coordinate in grid
 export function getTileType(map, x, y) {
     return new Promise(function (resolve, reject) {
         if (map) {
-            const type = map[x][y];
+            console.log(map[x][y]);
+            const type = map[x][y].type || map[x][y];
             if (type === 0) resolve("EMPTY");
             if (type === 1) resolve("UNBREAKABLE");
             if (type === 2) resolve("BREAKABLE");
@@ -66,7 +66,8 @@ export function getTileType(map, x, y) {
     });
 }
 
-export function setTileType(map, div, x, y, r) {
+export function setTileType(map, x, y, r) {
+    const div = map[x][y].div;
     if (r === "EMPTY") div.style.background = "url('assets/svg/Tile_Floor.svg')";
     if (r === "UNBREAKABLE") div.style.background = "url('assets/svg/Wall_Unbreakable.svg')";
     if (r === "BREAKABLE") {
@@ -80,20 +81,26 @@ export function setTileType(map, div, x, y, r) {
 }
 
 export function generateMap(map, gamescreen) {
-    console.log(map);
-    let count = 0;
     map.forEach((value, x, array) => {
         map[x].forEach((tile, y) => {
             getTileType(map, x, y).then(r => {
-                console.log(x + ":" + y + " > " + r);
                 const div = document.createElement("div");
+                const tile = {
+                    x: x,
+                    y: y,
+                    div: div,
+                    type: r
+                };
                 div.classList.add("tile");
                 div.style.height = "50px";
                 div.style.width = "50px";
                 div.dataset.pos = x + "|" + y;
                 div.dataset.type = r;
                 gamescreen.appendChild(div);
+                map[x][y]=tile;
+                setTileType(map, x, y, r);
             });
         });
-    })
+    });
+    console.log(map);
 }
