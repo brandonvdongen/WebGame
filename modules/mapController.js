@@ -50,7 +50,7 @@ export function getMap() {
 
 //get tiletype of coordinate in grid
 export function getTileType(map, x, y) {
-    const promise = new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         if (map) {
             const type = map[x][y];
             if (type === 0) resolve("EMPTY");
@@ -64,10 +64,22 @@ export function getTileType(map, x, y) {
             reject(Error("no map loaded"));
         }
     });
-    return promise;
 }
 
-export function drawMap(map, gamescreen) {
+export function setTileType(map, div, x, y, r) {
+    if (r === "EMPTY") div.style.background = "url('assets/svg/Tile_Floor.svg')";
+    if (r === "UNBREAKABLE") div.style.background = "url('assets/svg/Wall_Unbreakable.svg')";
+    if (r === "BREAKABLE") {
+        if (Math.random() > .1) {
+            div.style.background = "url('assets/svg/Wall_Breakable.svg')";
+        } else {
+            map[x][y] = 0;
+            div.style.background = "url('assets/svg/Tile_Floor.svg')";
+        }
+    }
+}
+
+export function generateMap(map, gamescreen) {
     console.log(map);
     let count = 0;
     map.forEach((value, x, array) => {
@@ -76,18 +88,11 @@ export function drawMap(map, gamescreen) {
                 console.log(x + ":" + y + " > " + r);
                 const div = document.createElement("div");
                 div.classList.add("tile");
-                div.style.height="50px";
+                div.style.height = "50px";
                 div.style.width = "50px";
-                if(r === "EMPTY")div.style.background = "url('assets/svg/Tile_Floor.svg')";
-                if(r === "UNBREAKABLE")div.style.background = "url('assets/svg/Wall_Unbreakable.svg')";
-                if(r === "BREAKABLE")div.style.background = "url('assets/svg/Wall_Breakable.svg')";
-                div.dataset.pos = x+"|"+y;
+                div.dataset.pos = x + "|" + y;
                 div.dataset.type = r;
-                count++;
-                setTimeout(()=>{
-                    gamescreen.appendChild(div);
-                },(x*50));
-
+                gamescreen.appendChild(div);
             });
         });
     })

@@ -1,9 +1,8 @@
 const players = {};
 
 export function preparePlayer(map) {
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         map = map_layout;
-        gamescreen = document.getElementById("gamescreen");
         if (map && gamescreen) {
             resolve(map);
         }
@@ -17,7 +16,6 @@ export function preparePlayer(map) {
         }
 
     });
-    return promise;
 }
 export function takeControl(){
 

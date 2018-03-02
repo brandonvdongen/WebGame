@@ -5,6 +5,7 @@
     grid-template-columns: repeat(15, 50px);
     background-color: black;
     overflow: hidden;
+    animation: reveal .5s;
 }
 
 .container {
@@ -18,10 +19,6 @@
 body{
     overflow:hidden;
     background-color: steelblue;
-}
-
-.tile{
-    animation: reveal .5s;
 }
 
 @keyframes reveal {

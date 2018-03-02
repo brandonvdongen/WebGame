@@ -7,5 +7,5 @@ let map;
 mapController.prepare(gamescreen)
     .then((r) => {
         map = r;
-        mapController.drawMap(map,gamescreen);
+        mapController.generateMap(map,gamescreen);
     });
