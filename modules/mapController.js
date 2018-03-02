@@ -3,24 +3,23 @@ let gamescreen;
 const map_layout = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1],
-    [1, 0, 1, 2, 1, 2, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 2, 0, 0, 0, 2, 0, 2, 2, 2, 0, 0, 1],
-    [1, 2, 1, 2, 1, 0, 1, 2, 1, 0, 1, 0, 1, 2, 1],
-    [1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2, 1],
-    [1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1],
-    [1, 2, 0, 2, 2, 2, 2, 0, 2, 2, 0, 0, 0, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1],
-    [1, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 1],
-    [1, 0, 1, 2, 1, 0, 1, 2, 1, 2, 1, 0, 1, 0, 1],
+    [1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1],
+    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1],
+    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 1],
     [1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
 //load the map template into the actual data
-export function prepare(map) {
-    const promise = new Promise((resolve, reject) => {
-        map = map_layout;
-        gamescreen = document.getElementById("gamescreen");
+export function prepare(gamescreen) {
+    return new Promise((resolve, reject) => {
+        const map = map_layout;
         if (map && gamescreen) {
             resolve(map);
         }
@@ -34,7 +33,6 @@ export function prepare(map) {
         }
 
     });
-    return promise;
 }
 
 //get map as array
@@ -71,6 +69,7 @@ export function getTileType(map, x, y) {
 
 export function drawMap(map, gamescreen) {
     console.log(map);
+    let count = 0;
     map.forEach((value, x, array) => {
         map[x].forEach((tile, y) => {
             getTileType(map, x, y).then(r => {
@@ -84,7 +83,11 @@ export function drawMap(map, gamescreen) {
                 if(r === "BREAKABLE")div.style.background = "url('assets/svg/Wall_Breakable.svg')";
                 div.dataset.pos = x+"|"+y;
                 div.dataset.type = r;
-                gamescreen.appendChild(div);
+                count++;
+                setTimeout(()=>{
+                    gamescreen.appendChild(div);
+                },(x*50));
+
             });
         });
     })
