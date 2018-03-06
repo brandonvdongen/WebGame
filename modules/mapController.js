@@ -19,7 +19,7 @@ const map_layout = [
 //load the map template into the actual data
 export function prepare(gamescreen) {
     return new Promise((resolve, reject) => {
-        const map = map_layout;
+        const map = JSON.parse(JSON.stringify(map_layout));
         if (map && gamescreen) {
             resolve(map);
         }
@@ -97,7 +97,7 @@ export function generateMap(map, gamescreen) {
                 div.dataset.pos = x + "|" + y;
                 div.dataset.type = r;
                 gamescreen.appendChild(div);
-                map[x][y]=tile;
+                map[x][y] = tile;
                 setTileType(map, x, y, r);
             });
         });
