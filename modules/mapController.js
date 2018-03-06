@@ -1,5 +1,4 @@
 //map data
-let gamescreen;
 const map_layout = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1],
@@ -14,6 +13,10 @@ const map_layout = [
     [1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 1],
     [1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
+const spawnpoints = [
+    [1, 1],
+    [1,13]
 ];
 
 //load the map template into the actual data
