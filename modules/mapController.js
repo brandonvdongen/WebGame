@@ -50,6 +50,17 @@ export function getMap() {
     });
 }
 
+export function getSpawnPoints() {
+    return new Promise(function (resolve, reject) {
+        if (spawnpoints) {
+            resolve(spawnpoints);
+        }
+        else {
+            reject(Error("no map loaded"));
+        }
+    });
+}
+
 //get tiletype of coordinate in grid
 export function getTileType(map, x, y) {
     return new Promise(function (resolve, reject) {
