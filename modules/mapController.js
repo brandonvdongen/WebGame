@@ -14,9 +14,9 @@ const map_layout = [
     [1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-const spawnpoints = [
+export let spawnpoints = [
     [1, 1],
-    [1, 13]
+    [13, 11]
 ];
 
 //load the map template into the actual data
@@ -39,27 +39,27 @@ export function prepare(gamescreen_tiles) {
 }
 
 //get map as array
-export function getMap() {
-    return new Promise(function (resolve, reject) {
-        if (map) {
-            resolve(map);
-        }
-        else {
-            reject(Error("no map loaded"));
-        }
-    });
-}
-
-export function getSpawnPoints() {
-    return new Promise(function (resolve, reject) {
-        if (spawnpoints) {
-            resolve(spawnpoints);
-        }
-        else {
-            reject(Error("no map loaded"));
-        }
-    });
-}
+// export function getMap() {
+//     return new Promise(function (resolve, reject) {
+//         if (map) {
+//             resolve(map);
+//         }
+//         else {
+//             reject(Error("no map loaded"));
+//         }
+//     });
+// }
+//
+// export function getSpawnPoints() {
+//     return new Promise(function (resolve, reject) {
+//         if (spawnpoints) {
+//             resolve(spawnpoints);
+//         }
+//         else {
+//             reject(Error("no map loaded"));
+//         }
+//     });
+// }
 
 //get tiletype of coordinate in grid
 export function getTileType(map, x, y) {

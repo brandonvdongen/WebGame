@@ -1,5 +1,5 @@
-import {getKeyBind} from "./keyBind.js";
-import {getMap,getSpawnPoints} from "./mapController.js";
+import {getKeyBind} from "../modules/keyBind.js";
+import {spawnpoints} from "../modules/mapController.js";
 
 let players = [];
 
@@ -14,27 +14,46 @@ let controls = {
     down2: 0,
     right2: 0,
     bomb2: 0
-}
+};
+
+let walkable = ["EMPTY", "PICKUP"];
 
 class Player_Pawn {
     constructor(color, spawnpoint = {x: 0, y: 0}) {
-        this.x = spawnpoint.x || 0;
-        this.y = spawnpoint.y || 0;
+        this.x = spawnpoint.x || 1;
+        this.y = spawnpoint.y || 1;
         this.div = document.createElement("div");
-        this.div.style.position = "absolutegi";
+        this.div.style.position = "absolute";
         this.div.style.height = "50px";
         this.div.style.width = "50px";
-        this.div.style.position = "relative";
-        this.div.style.background = "url('assets/svg/character1-4.svg')";
+        this.div.style.background = "url('assets/svg/character1.svg')";
     }
 }
 
+function collision(player, map, id) {
+    let collided = false;
+    players.forEach((target, index) => {
+        if (index !== id) {
+            if (player.x === target.x && player.y === target.y) {
+                console.log("collision!");
+                collided = true;
+            }
+        }
+
+    });
+    if (collided) return true;
+    return walkable.indexOf(map[player.y][player.x].type) === -1;
+
+}
 
 export function preparePlayers(gamescreen_objects) {
     return new Promise((resolve, reject) => {
         if (gamescreen_objects) {
             const player = new Player_Pawn("#ff0000");
             gamescreen_objects.appendChild(player.div);
+            player.x = spawnpoints[players.length][0];
+            player.y = spawnpoints[players.length][1];
+            player.div.style.background = "url('assets/svg/character" + (players.length + 1) + ".svg')";
             players.push(player);
             resolve(players);
         }
@@ -51,28 +70,12 @@ export function preparePlayers(gamescreen_objects) {
 }
 
 export function takeControl(map) {
+    movement("update", map);
     document.addEventListener("keydown", (ev) => {
         const button = getKeyBind(ev.code);
         if (!controls[button]) {
             controls[button] = 1;
-
-            if (button === "up1") {
-                players[0].y -= 1;
-            }
-            else if (button === "down1") {
-                players[0].y += 1;
-            }
-            else if (button === "left1") {
-                players[0].x -= 1;
-            }
-            else if (button === "right1") {
-                players[0].x += 1;
-            }
-
-            players.forEach((player, index) => {
-                player.div.style.top = player.y * 50 + "px";
-                player.div.style.left = player.x * 50 + "px";
-            })
+            movement(button, map);
 
         }
     });
@@ -84,4 +87,37 @@ export function takeControl(map) {
         }
     });
 
+}
+
+
+function movement(button, map) {
+    const id = button.slice(-1);
+    if (button === "up" + id) {
+        players[id - 1].y -= 1;
+        if (collision(players[id - 1], map, id - 1)) {
+            players[id - 1].y += 1;
+        }
+    }
+    else if (button === "down" + id) {
+        players[id - 1].y += 1;
+        if (collision(players[id - 1], map, id - 1)) {
+            players[id - 1].y -= 1;
+        }
+    }
+    else if (button === "left" + id) {
+        players[id - 1].x -= 1;
+        if (collision(players[id - 1], map, id - 1)) {
+            players[id - 1].x += 1;
+        }
+    }
+    else if (button === "right" + id) {
+        players[id - 1].x += 1;
+        if (collision(players[id - 1], map, id - 1)) {
+            players[id - 1].x -= 1;
+        }
+    }
+    players.forEach((player, index) => {
+        player.div.style.top = player.y * 50 + "px";
+        player.div.style.left = player.x * 50 + "px";
+    });
 }

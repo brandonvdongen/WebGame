@@ -15,7 +15,9 @@ start_button.addEventListener("click", () => {
             map = r;
             mapController.generateMap(map, gamescreen_tiles).then((map) => {
                 playerModule.preparePlayers(gamescreen_objects).then(() => {
-                    playerModule.takeControl(map);
+                    playerModule.preparePlayers(gamescreen_objects).then(() => {
+                        playerModule.takeControl(map);
+                    });
                 });
             });
         });
