@@ -39,3 +39,13 @@ body {
         opacity: 1;
     }
 }
+
+.player {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: url(assets/svg/character1.svg);
+    top: 50px;
+    left: 150px;
+    transition: top 0.1s, left 0.1s;
+}

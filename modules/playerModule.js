@@ -23,10 +23,7 @@ class Player_Pawn {
         this.x = spawnpoint.x || 1;
         this.y = spawnpoint.y || 1;
         this.div = document.createElement("div");
-        this.div.style.position = "absolute";
-        this.div.style.height = "50px";
-        this.div.style.width = "50px";
-        this.div.style.background = "url('assets/svg/character1.svg')";
+        this.div.classList.add("player");
     }
 }
 
