@@ -49,3 +49,10 @@ body {
     left: 150px;
     transition: top 0.1s, left 0.1s;
 }
+
+.bomb {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: url(assets/svg/bom.svg);
+}

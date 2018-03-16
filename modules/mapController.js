@@ -73,6 +73,7 @@ export function getTileType(map, x, y) {
             if (type === 3) resolve("PICKUP");
             if (type === 4) resolve("PLAYER");
             if (type === 5) resolve("EXPLOSION");
+            if (type === 6) resolve("BLOCKED");
         }
         else {
             reject(Error("no map loaded"));
@@ -82,7 +83,7 @@ export function getTileType(map, x, y) {
 
 export function setTileType(map, x, y, r) {
     const div = map[x][y].div;
-    if (r === "EMPTY") div.style.background = "url('assets/svg/Tile_Floor.svg')";
+    if (r === "EMPTY" || r === "BLOCKED") div.style.background = "url('assets/svg/Tile_Floor.svg')";
     if (r === "UNBREAKABLE") div.style.background = "url('assets/svg/Wall_Unbreakable.svg')";
     if (r === "BREAKABLE") {
         if (Math.random() > .1) {

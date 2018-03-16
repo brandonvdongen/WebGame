@@ -1,5 +1,6 @@
 import {getKeyBind} from "../modules/keyBind.js";
 import {spawnpoints} from "../modules/mapController.js";
+import {placeBomb} from "./bombController.js";
 
 let players = [];
 
@@ -15,7 +16,7 @@ let controls = {
     right2: 0,
     bomb2: 0
 };
-
+let gamescreen;
 let walkable = ["EMPTY", "PICKUP"];
 
 class Player_Pawn {
@@ -44,6 +45,7 @@ function collision(player, map, id) {
 }
 
 export function preparePlayers(gamescreen_objects) {
+    gamescreen = gamescreen_objects;
     return new Promise((resolve, reject) => {
         if (gamescreen_objects) {
             const player = new Player_Pawn("#ff0000");
@@ -69,17 +71,23 @@ export function preparePlayers(gamescreen_objects) {
 export function takeControl(map) {
     movement("update", map);
     document.addEventListener("keydown", (ev) => {
-        const button = getKeyBind(ev.code);
-        if (!controls[button]) {
+        const button = getKeyBind(ev.code) || "none";
+        if (controls[button] === 0) {
             controls[button] = 1;
-            movement(button, map);
+            const id = button.slice(-1);
+            if (button === "bomb" + id) {
+                const position = {x: players[id - 1].x, y: players[id - 1].y};
+                placeBomb(position, map, gamescreen, players);
+            } else {
+                movement(button, map);
+            }
 
         }
     });
 
     document.addEventListener("keyup", (ev) => {
         const button = getKeyBind(ev.code);
-        if (controls[button]) {
+        if (controls[button] === 1) {
             controls[button] = 0;
         }
     });
@@ -88,33 +96,36 @@ export function takeControl(map) {
 
 
 function movement(button, map) {
-    const id = button.slice(-1);
-    if (button === "up" + id) {
-        players[id - 1].y -= 1;
-        if (collision(players[id - 1], map, id - 1)) {
-            players[id - 1].y += 1;
-        }
-    }
-    else if (button === "down" + id) {
-        players[id - 1].y += 1;
-        if (collision(players[id - 1], map, id - 1)) {
+    if (button && map) {
+        const id = button.slice(-1);
+        if (button === "up" + id) {
             players[id - 1].y -= 1;
+            if (collision(players[id - 1], map, id - 1)) {
+                players[id - 1].y += 1;
+            }
         }
-    }
-    else if (button === "left" + id) {
-        players[id - 1].x -= 1;
-        if (collision(players[id - 1], map, id - 1)) {
-            players[id - 1].x += 1;
+        else if (button === "down" + id) {
+            players[id - 1].y += 1;
+            if (collision(players[id - 1], map, id - 1)) {
+                players[id - 1].y -= 1;
+            }
         }
-    }
-    else if (button === "right" + id) {
-        players[id - 1].x += 1;
-        if (collision(players[id - 1], map, id - 1)) {
+        else if (button === "left" + id) {
             players[id - 1].x -= 1;
+            if (collision(players[id - 1], map, id - 1)) {
+                players[id - 1].x += 1;
+            }
         }
+        else if (button === "right" + id) {
+            players[id - 1].x += 1;
+            if (collision(players[id - 1], map, id - 1)) {
+                players[id - 1].x -= 1;
+            }
+        }
+        players.forEach((player, index) => {
+            player.div.style.top = player.y * 50 + "px";
+            player.div.style.left = player.x * 50 + "px";
+        });
     }
-    players.forEach((player, index) => {
-        player.div.style.top = player.y * 50 + "px";
-        player.div.style.left = player.x * 50 + "px";
-    });
 }
+
